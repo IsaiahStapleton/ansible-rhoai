@@ -5,4 +5,4 @@ labels:
       bundle: minio
     includeSelectors: true
 resources:
-- ../../base/core/namespaces/minio
+  - ../../base/core/namespaces/minio
