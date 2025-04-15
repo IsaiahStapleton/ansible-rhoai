@@ -1,0 +1,6 @@
+---
+- name: "Install Red Hat OpenShift AI bundle on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/nfd/') }}"
+    validate_certs: false
