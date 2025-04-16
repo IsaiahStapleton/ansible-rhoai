@@ -1,0 +1,9 @@
+---
+- name: Deploy everything
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deploy-operators
+    - configure-nfd
+    - deploy-rhoai

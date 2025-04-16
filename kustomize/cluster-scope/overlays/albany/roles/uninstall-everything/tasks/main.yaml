@@ -1,0 +1,18 @@
+---
+- name: Remove RHOAI CRDs
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/rhoai/') }}"
+    validate_certs: false
+
+- name: Remove NFD instance
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/nfd/') }}"
+    validate_certs: false
+
+- name: Remove Operators
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/operators/') }}"
+    validate_certs: false

@@ -1,7 +1,7 @@
 ---
-- name: Deploy cert-manager
+- name: Uninstall everything
   hosts: localhost
   connection: local
   gather_facts: false
   roles:
-    - deploy-cert-manager
+    - uninstall-everything
