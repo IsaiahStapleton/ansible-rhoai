@@ -1,0 +1,48 @@
+---
+- name: Install Operators
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/operators/') }}"
+    validate_certs: false
+
+- name: Wait for NVIDIA GPU Operator to be ready
+  kubernetes.core.k8s_info:
+    namespace: nvidia-gpu-operator
+    kind: Pod
+    label_selectors:
+      - app=gpu-operator
+    wait: true
+    wait_timeout: 600
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Apply NVIDIA GPU Clusterpolicy
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/nvidia/') }}"
+    validate_certs: false
+
+- name: Wait for RHOAI operator to be ready
+  kubernetes.core.k8s_info:
+    namespace: redhat-ods-operator
+    kind: Pod
+    label_selectors:
+      - name=rhods-operator
+    wait: true
+    wait_timeout: 600
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Apply RHOAI CRDs
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/rhoai/') }}"
+    validate_certs: false
+
+- name: Apply NFD instance
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/nfd/') }}"
+    validate_certs: false

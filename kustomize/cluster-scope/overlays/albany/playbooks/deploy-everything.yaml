@@ -4,6 +4,4 @@
   connection: local
   gather_facts: false
   roles:
-    - deploy-operators
-    - configure-nfd
-    - deploy-rhoai
+    - install-everything
