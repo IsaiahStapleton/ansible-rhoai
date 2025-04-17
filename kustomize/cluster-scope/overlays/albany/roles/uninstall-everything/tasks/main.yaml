@@ -5,6 +5,30 @@
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/rhoai/') }}"
     validate_certs: false
 
+- name: Remove all deployed Models
+  kubernetes.core.k8s_json_patch:
+    api_version: serving.kserve.io/v1beta1
+    kind: InferenceService
+    namespace: "{{ item.metadata.namespace }}"
+    name: "{{ item.metadata.name }}"
+    patch:
+      - op: remove
+        path: "/metadata/finalizers"
+    validate_certs: false
+  loop: "{{ query('kubernetes.core.k8s', api_version='serving.kserve.io/v1beta1', kind='InferenceService') }}"
+  ignore_errors: true
+
+- name: Remove all ServingRuntimes
+  kubernetes.core.k8s:
+    state: absent
+    api_version: serving.kserve.io/v1alpha1
+    kind: ServingRuntime
+    namespace: "{{ item.metadata.namespace }}"
+    name: "{{ item.metadata.name }}"
+    validate_certs: false
+  loop: "{{ query('kubernetes.core.k8s', api_version='serving.kserve.io/v1alpha1', kind='ServingRuntime') }}"
+  ignore_errors: true
+
 - name: Remove NFD instance
   kubernetes.core.k8s:
     state: absent
@@ -16,3 +40,14 @@
     state: absent
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/operators/') }}"
     validate_certs: false
+
+- name: Remove ServiceMesh and Authorino CSVs
+  kubernetes.core.k8s:
+    state: absent
+    api_version: operators.coreos.com/v1alpha1
+    kind: ClusterServiceVersion
+    namespace: openshift-operators
+    name: "{{ item }}"
+    validate_certs: false
+  loop: "{{ query('kubernetes.core.k8s', api_version='operators.coreos.com/v1alpha1', kind='ClusterServiceVersion', namespace='openshift-operators') | selectattr('metadata.name', 'match', '(servicemeshoperator|authorino).*') | map(attribute='metadata.name') }}"
+  ignore_errors: true
