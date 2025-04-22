@@ -6,6 +6,4 @@ resources:
   - ../../../../bundles/nvidia-gpu-operator
   - ../../../../bundles/serverless-operator
   - ../../../../bundles/servicemesh-operator
-  - ../../../../bundles/minio
   - ../../../../bundles/authorino-operator
-
