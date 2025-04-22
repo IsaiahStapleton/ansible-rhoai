@@ -46,3 +46,21 @@
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/nfd/') }}"
     validate_certs: false
+
+- name: Wait for NVIDIA GPU Operator to be ready
+  kubernetes.core.k8s_info:
+    namespace: nvidia-gpu-operator
+    kind: Pod
+    label_selectors:
+      - app=gpu-feature-discovery
+    wait: true
+    wait_timeout: 600
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Deploy Granite Model and vLLM ServingRuntime
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/models/') }}"
+    validate_certs: false
