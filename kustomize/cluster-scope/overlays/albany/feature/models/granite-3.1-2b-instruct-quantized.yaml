@@ -10,6 +10,7 @@ metadata:
     sidecar.istio.io/rewriteAppHTTPProbers: "true"
   labels:
     opendatahub.io/dashboard: "true"
+    gather_llm_metrics: "true"
 spec:
   predictor:
     minReplicas: 1
