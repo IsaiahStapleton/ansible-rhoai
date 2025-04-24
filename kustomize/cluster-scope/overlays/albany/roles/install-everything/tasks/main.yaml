@@ -98,3 +98,9 @@
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/models/') }}"
     validate_certs: false
+
+- name: Deploy llm-load-test-exporter
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/llm-load-test-exporter/') }}"
+    validate_certs: false

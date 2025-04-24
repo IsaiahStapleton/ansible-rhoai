@@ -87,6 +87,12 @@
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/models/') }}"
     validate_certs: false
 
+- name: Remove llm-load-test-exporter
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/llm-load-test-exporter/') }}"
+    validate_certs: false
+
 - name: Remove all Minio Jobs
   shell: oc delete job --all -n demo
 
