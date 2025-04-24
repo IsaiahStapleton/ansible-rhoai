@@ -65,9 +65,36 @@
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/minio/') }}"
     validate_certs: false
 
+- name: Wait for Minio Jobs to Finish
+  kubernetes.core.k8s_info:
+    namespace: demo
+    kind: Job
+    name: create-minio-buckets
+    wait: true
+    wait_timeout: 600
+    wait_condition:
+      type: Complete
+      status: "True"
 
-# - name: Deploy Granite Model and vLLM ServingRuntime
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/models/') }}"
-#     validate_certs: false
+- name: Upload Granite Model
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/upload-model/') }}"
+    validate_certs: false
+
+- name: Wait for Granite Model to Finish Uploading
+  kubernetes.core.k8s_info:
+    namespace: demo
+    kind: Job
+    name: upload-granite-model
+    wait: true
+    wait_timeout: 600
+    wait_condition:
+      type: Complete
+      status: "True"
+
+- name: Deploy Granite Model and vLLM ServingRuntime
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/models/') }}"
+    validate_certs: false

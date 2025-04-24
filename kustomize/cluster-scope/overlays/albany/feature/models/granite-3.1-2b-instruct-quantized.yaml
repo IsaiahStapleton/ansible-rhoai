@@ -19,7 +19,7 @@ spec:
       modelFormat:
         name: vLLM
       storage:
-        key: minio  
+        key: aws-connection-my-storage  
         path: granite-3.1-2b-instruct-quantized.w4a16
       resources:
         requests:

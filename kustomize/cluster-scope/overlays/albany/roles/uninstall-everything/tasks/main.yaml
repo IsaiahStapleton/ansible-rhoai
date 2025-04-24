@@ -74,3 +74,21 @@
     validate_certs: false
   loop: "{{ query('kubernetes.core.k8s', api_version='apiextensions.k8s.io/v1', kind='CustomResourceDefinition') | selectattr('metadata.name', 'match', 'multikueue.*') | map(attribute='metadata.name') }}"
   ignore_errors: true
+
+- name: Remove Minio S3 Storage
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/minio/') }}"
+    validate_certs: false
+
+- name: Remove vLLM ServingRuntime
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/models/') }}"
+    validate_certs: false
+
+- name: Remove all Minio Jobs
+  shell: oc delete job --all -n demo
+
+- name: Remove all Minio Job Pods
+  shell: oc delete pod --all -n demo
