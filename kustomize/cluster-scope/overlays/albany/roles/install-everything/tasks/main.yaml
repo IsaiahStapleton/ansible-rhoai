@@ -104,3 +104,9 @@
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/llm-load-test-exporter/') }}"
     validate_certs: false
+
+- name: Configure Prometheus - Enable User Workload Monitoring
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/prometheus/') }}"
+    validate_certs: false

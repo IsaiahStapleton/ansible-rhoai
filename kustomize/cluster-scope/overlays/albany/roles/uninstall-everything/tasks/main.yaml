@@ -98,3 +98,9 @@
 
 - name: Remove all Minio Job Pods
   shell: oc delete pod --all -n demo
+
+- name: Disable User Workload Monitoring for Prometheus
+  kubernetes.core.k8s:
+    state: absent
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/prometheus/') }}"
+    validate_certs: false
