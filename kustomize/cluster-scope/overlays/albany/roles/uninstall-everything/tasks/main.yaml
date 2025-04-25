@@ -93,12 +93,6 @@
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/llm-load-test-exporter/') }}"
     validate_certs: false
 
-- name: Remove all Minio Jobs
-  shell: oc delete job --all -n demo
-
-- name: Remove all Minio Job Pods
-  shell: oc delete pod --all -n demo
-
 - name: Disable User Workload Monitoring for Prometheus
   kubernetes.core.k8s:
     state: absent
