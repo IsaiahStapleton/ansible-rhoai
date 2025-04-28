@@ -7,3 +7,4 @@ resources:
   - ../../../../bundles/serverless-operator
   - ../../../../bundles/servicemesh-operator
   - ../../../../bundles/authorino-operator
+  - ../../../../bundles/autopilot
