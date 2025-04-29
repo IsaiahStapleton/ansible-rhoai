@@ -104,9 +104,3 @@
     state: absent
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/prometheus/') }}"
     validate_certs: false
-
-- name: Remove Autopilot
-  kubernetes.core.k8s:
-    state: absent
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/autopilot/') }}"
-    validate_certs: false

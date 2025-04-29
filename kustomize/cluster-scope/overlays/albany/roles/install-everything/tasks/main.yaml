@@ -5,7 +5,7 @@
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/operators/') }}"
     validate_certs: false
 
-- name: Create demo namespace
+- name: Create Demo Namespace
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/demo-namespace/') }}"
@@ -41,13 +41,13 @@
       type: Ready
       status: 'True'
 
-- name: Apply RHOAI CRDs
+- name: Apply RHOAI Config
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/rhoai/') }}"
     validate_certs: false
 
-- name: Apply NFD instance
+- name: Apply NFD Config
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/nfd/') }}"
@@ -111,14 +111,8 @@
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/llm-load-test-exporter/') }}"
     validate_certs: false
 
-- name: Configure Prometheus - Enable User Workload Monitoring
+- name: Configure Prometheus
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/prometheus/') }}"
-    validate_certs: false
-
-- name: Install & Configure Autopilot
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/autopilot/') }}"
     validate_certs: false

@@ -25,7 +25,6 @@
           "force": false,
           "timeoutSeconds": 300
         },
-        "kernelModuleType": "auto",
         "maxParallelUpgrades": 1,
         "maxUnavailable": "25%",
         "podDeletion": {
